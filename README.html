@@ -367,39 +367,60 @@ summary {
 
 <div id="covid-19-research-project" class="section level1">
 <h1>COVID-19 Research Project</h1>
+<p><!-- above is project title --></p>
 <div id="biol390-reproducible-research-summer-2020" class="section level3">
 <h3>BIOL390: Reproducible Research, Summer 2020</h3>
-<p><strong>Copyright © (2020) Bethany Riess</strong></p>
+<p><strong>Copyright © (2020) Bethany Riess</strong> <!-- above is copyright information --></p>
 </div>
 <div id="a.-abstract-tldr" class="section level2">
 <h2>A. Abstract (tl;dr)</h2>
-<pre><code>COVID-19 research project evaluating the COVID-19 trends from states that never issued stay-at-home orders compared to states that did. The information gathered for this project took place from the beginning of the pandemic to the end of June 2020.</code></pre>
+<p><!-- an abstract was labeled above with level two header and printed below --></p>
+<p>COVID-19 research project evaluating the COVID-19 trends from states that never issued stay-at-home orders compared to states that did. The information gathered for this project took place from the beginning of the pandemic until August 16th, 2020.</p>
 </div>
 <div id="b.-introduction" class="section level2">
 <h2>B. Introduction</h2>
-<p>COVID-19 (<em>Orthocoronavirinae</em>) is the name given to the virus that has caused a pandemic starting at the end of 2019. This virus is also known as SARS‑CoV‑2.First identified in December of 2019, the virus outbreak began in Wuhan, China and quickly sread throughout the globe. The World Health Organization (WHO) declared it an International Public Health Emergency <a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>, and many states in the United States responded quickly, implementing regulations in hope of decreasing the spread of COVID-19, and slowing its effect on the population. Some states chose to shut down almost entirely</p>
+<p><!-- following the abstract, the header was placed on line 25(above) and the introduction to the project is printed below on line 27  --></p>
+<p>COVID-19 (<em>Orthocoronavirinae</em>) is the name given to the virus that has caused a pandemic starting at the end of 2019. This virus is also known as SARS‑CoV‑2.First identified in December of 2019, the virus outbreak began in Wuhan, China and quickly spread throughout the globe. The World Health Organization (WHO) declared it an International Public Health Emergency <a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> <!-- Sources were referenced using the footnote addin in the printed discussion. General information for covid-19 was collected from the internet, primarily from wikipedia. --> , and many states in the United States responded quickly, implementing regulations in hope of decreasing the spread of COVID-19, and slowing its effect on the population. Some states chose to shut down almost entirely, closing gyms, theaters, bowling alleys, restaurants, and much more. While many states were quick to issue stay-at-home orders, some states were determined to remain more open for the height of the pandemic. Seven states chose not to issue stay-at-home orders during the pandemic. These states were Arkansas, Iowa, Nebraska, North Dakota, South Dakota, Utah, and Wyoming.One of these states, South Dakota, did not even require the closure of any businesses (although in-person education at schools was closed in all 7 states.)<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> <!-- the timeframe of information is from December 2019, until August 16th 2020 which was the most recent data update from the source at the time of completing this project --></p>
 </div>
 <div id="c.-hypothesis" class="section level2">
 <h2>C. Hypothesis</h2>
+<p><!-- The hypothesis follows the introduction and is labeled on line 29 as a level 2 header. The actual hypothesis is printed below --> The intention of the stay-at-home orders was to limit interactions from members of the population in hopes of avoiding contact that would spread COVID-19. Based on this idea, the states that did not issue stay-at-home orders should have higher rates of COVID-19 cases than the states that did issue a stay-at-home order.</p>
 </div>
 <div id="d.-datasets-used" class="section level2">
 <h2>D. Datasets used</h2>
+<p><!-- Following the hypothesis is information about the datasets that were used for this project. One data set was taken from the CDC's website (the link is in the project) and the other data set was from World Population Review, which is a website with data sets on population. The information for the population dataset was taken from 2020 Census estimates. --> The primary dataset used for this analysis is the “United States COVID-19 Cases and Deaths by State” compiled by the CDC and published on Data.CDC.gov<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>.Additionaly, the dataset “United States by Density” was collected from <a href="https://worldpopulationreview.com/state-rankings/state-densities">World Population Review</a>, which compiled the dataset based off US Census state population estimates.<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a> <!-- again, the datasets used are cited using footnotes--></p>
 </div>
 <div id="e.-description-of-analyses" class="section level2">
 <h2>E. Description of analyses</h2>
-</div>
-<div id="f.-conclusions" class="section level2">
-<h2>F. Conclusions</h2>
-</div>
-<div id="g.-viewing-this-project" class="section level2">
-<h2>G. Viewing this project</h2>
-<pre><code>    The completed project files can be accessed online at (project&#39;s URL). The repo for this reproducible project is also publicly available at https://github.com/riessb12/COVID-19.</code></pre>
+<p><!-- After the datasets were discussed, a level 2 header marks the description of analyses. The majority of work for this project is in this section. --></p>
+<p><code>{r , message = FALSE, echo = FALSE} mapData &lt;- read_csv(&quot;raw_data/US_MAP_DATA.csv&quot;, skip = 2) %&gt;%          filter(fips &lt; 57, abbr != &quot;US&quot;)</code> <!-- using the raw data, I made smaller tables that were easy to reference with new names. I narrowed the raw data into two smaller tibbles tha I worked with for the rest of the project --> <code>{r popdata, message=FALSE,echo=FALSE} popdata &lt;- read_csv(&quot;raw_data/US_POP_DENS.csv&quot;)</code></p>
+<p><code>{r, message=FALSE, echo=FALSE} totalDeathmap &lt;- mapData %&gt;%         rename(Total_Deaths = &quot;Total Death&quot;, State = &quot;jurisdiction&quot;) %&gt;%         summarise(region = str_to_lower(State), value = Total_Deaths) %&gt;%     write_csv(&quot;output_temp.dataset/deaths_by_state_map.csv&quot;)</code> <!-- the chunk above this comment narrowed down one of the previous tibbles to an even more specific one which I again gave it's own name and saved it to my folder of more refined data. I then copied and pasted the above chunk below it and edited it to get deaths_per_100000 instead of total deaths. Both of these final datasets originated from the main one colleted off the cdc website  --> <code>{r , message = FALSE, echo = FALSE} normalDeathmap &lt;- mapData %&gt;%          rename(State = &quot;jurisdiction&quot;, Deaths_per_100000 = &quot;Death_100k&quot;) %&gt;%         summarize(region = str_to_lower(State), value = Deaths_per_100000) %&gt;%     write_csv(&quot;output_temp.dataset/normalized_deaths_by_state_map.csv&quot;)</code></p>
+<p><code>{r, message=FALSE, echo=FALSE} totalDeath &lt;- mapData %&gt;%         rename(Total_Deaths = &quot;Total Death&quot;, State = &quot;jurisdiction&quot;) %&gt;%         summarise(State, Total_Deaths) %&gt;%     write_csv(&quot;output_temp.dataset/deaths_by_state.csv&quot;)</code> <!-- I did the same thing with the above and below chunks as stated in the comment on line 55, but these small datasets are summarized differently since they are not being used for the choropleths --> <code>{r , message = FALSE, echo = FALSE} normalDeath &lt;- mapData %&gt;%          rename(State = &quot;jurisdiction&quot;, Deaths_per_100000 = &quot;Death_100k&quot;) %&gt;%         summarize(State, Deaths_per_100000) %&gt;%     write_csv(&quot;output_temp.dataset/normalized_deaths_by_state_map.csv&quot;)</code></p>
+<p>```{r, statesvector, message=FALSE, echo=FALSE} totalnostate &lt;- totalDeath %&gt;% filter(State == “Arkansas”| State == “Iowa”|State == “Nebraska”|State == “North Dakota” |State == “South Dakota”|State == “Utah”|State == “Wyoming”)</p>
+<p>normalnostate &lt;- normalDeath %&gt;% filter(State == “Arkansas”| State == “Iowa”|State == “Nebraska”|State == “North Dakota” |State == “South Dakota”|State == “Utah”|State == “Wyoming”)</p>
+<pre><code> &lt;!-- the chunk starting on line 77 allowed me to create two new smaller datasets that I could layer on to a scatter plot by repeating &quot;geom_point&quot;. That way I made the points stand out for the countries I was emphasizing. Below, they show as a different color and larger size than the other points. --&gt; 
+
+Seven states chose not to implement a stay-at-home order during the beginning of the COVID-19 pandemic. Under the assumption that the stay-at-home orders would reduce contact between people in a population, it could by hypothesized that the states which did implement the order would have less deaths than the states which did not. Figure 1, below, shows the total deaths per state. In this figure, the states with black dots are the state which did implement the order, while the dots in red mark the total deaths for the states which did not implement the order. On a log scale we can see that the states which did not implement the order had generally less fatalities than the states that did. 
+
+```{r, message=FALSE, echo=FALSE, fig.cap= &quot;**Figure 1:** Total deaths per state. States that did not implement a stay-at-home order are red.&quot;}
+totalDeath %&gt;%
+    ggplot(aes(x = State, y = Total_Deaths)) +
+    geom_point()+
+    geom_point(data = totalnostate, aes(x = State, y = Total_Deaths), color = &quot;red&quot;, size = 3)+
+    theme_grey() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1), legend.position = &quot;none&quot;) +
+    labs(title = &quot;Total Deaths per State&quot;) +
+    scale_y_log10()</code></pre>
+<p><!-- above is a standard scatter plot piped out of the dataset, but this includes a second "geom_point" that layers on more distinct points for the states I wanted to emphasize. This only worked for me when I piped the plot out of the dataset instead of including the dataset within the path of ggplot. --> <!-- I chose to scale the above graph with log10 because the points were packed to densely to distinguish well before scaling it --> Total deaths in not a true indicator of effectiveness for the stay-at-home order, however, because other factors can play into the totals, such state size, population, and population density. A slightly better indicator of effectiveness of the stay-at-home order can be seen in Figure 2 below. Looking at Total Deaths per 100,000 people demonstrates fatality rates with more consideration of the population size. The black dots in the figure represent states that implemented a stay-at-home order and the red dots represent states that did not. <!-- In the chunk below I used the same technique as above to point out the states I was talking about. I did not choose to scale this graph, though, because this way seemed a more accurate representation of the data--> <code>{r, message=FALSE, echo=FALSE, fig.cap= &quot;**Figure 2:** Total deaths per 100k people per state. States that did not implement a stay-at-home order are in red&quot;} normalDeath %&gt;% ggplot(aes(x = State, y = Deaths_per_100000)) +     geom_point() +     geom_point(data = normalnostate, aes(x = State, y = Deaths_per_100000), color = &quot;red&quot;, size = 3)+     theme_grey() +     theme(axis.text.x = element_text(angle = 45, hjust = 1), legend.position = &quot;none&quot;) +     labs(title = &quot;Total Deaths per 100k People per State&quot;)</code></p>
 </div>
 </div>
 <div class="footnotes">
 <hr />
 <ol>
 <li id="fn1"><p>COVID-19 pandemic. (2020, August 14). Retrieved August 17, 2020, from <a href="https://en.wikipedia.org/wiki/COVID-19_pandemic" class="uri">https://en.wikipedia.org/wiki/COVID-19_pandemic</a><a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p>States that did not issue stay-at-home orders in response to the coronavirus (COVID-19) pandemic, 2020. (n.d.). Retrieved August 16, 2020, from <a href="https://ballotpedia.org/States_that_did_not_issue_stay-at-home_orders_in_response_to_the_coronavirus_(COVID-19)_pandemic,_2020" class="uri">https://ballotpedia.org/States_that_did_not_issue_stay-at-home_orders_in_response_to_the_coronavirus_(COVID-19)_pandemic,_2020</a><a href="#fnref2" class="footnote-back">↩︎</a></p></li>
+<li id="fn3"><p>United States COVID-19 Cases and Deaths by State. (n.d.). Retrieved August 16, 2020, from <a href="https://www.cdc.gov/covid-data-tracker/" class="uri">https://www.cdc.gov/covid-data-tracker/</a><a href="#fnref3" class="footnote-back">↩︎</a></p></li>
+<li id="fn4"><p>United States by Density 202. (n.d.). Retrieved August 16, 2020, from <a href="https://worldpopulationreview.com/state-rankings/state-densities" class="uri">https://worldpopulationreview.com/state-rankings/state-densities</a><a href="#fnref4" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
 
